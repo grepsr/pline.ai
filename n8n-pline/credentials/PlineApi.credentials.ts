@@ -13,7 +13,7 @@ export class PlineApi implements ICredentialType {
 
 	icon: Icon = { light: 'file:../nodes/Pline/pline.svg', dark: 'file:../nodes/Pline/pline.svg' };
 
-	documentationUrl = 'https://github.com/grepsr/pline-api/tree/main/n8n-pline#credentials';
+	documentationUrl = 'https://github.com/grepsr/pline.ai/tree/main/n8n-pline#credentials';
 
 	properties: INodeProperties[] = [
 		{

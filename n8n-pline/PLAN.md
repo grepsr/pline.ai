@@ -13,7 +13,7 @@ server-side and the UI never states a default the sources disagree on:
 - search cost: docs billing page says 2 credits per 10 results, the MCP guide says fast = 1 and
   full = 3 credits. The UI says "costs credits; full mode costs more" without a number.
 
-Note: `skills/pline-api/references/endpoints.md` lags the MCP reference (no `clean_markdown`,
+Note: `skills/pline-ai/references/endpoints.md` lags the MCP reference (no `clean_markdown`,
 `timeout`, `wait_selector`, `wait_ms`, `ignoreRobotsTxt`; crawl `output` as an object; batch in
 camelCase). The MCP server is what talks to the API today, so the node follows the MCP reference.
 
@@ -170,7 +170,7 @@ The node will map whatever you confirm; until then any other 4xx shows the API's
 
 1. Sign-up: https://app.pline.ai/signup. Login: https://app.pline.ai/login. API keys page: "API keys" in the app after sign-in.
 2. Out of credits returns `429`, same as rate limiting; the API's `message` distinguishes them, so the node shows the API message for every 429 plus a hint covering both.
-3. Code lives in `n8n-pline/` in this repo (`grepsr/pline-api`). npm org `pline`, npm user `pline.ai`.
+3. Code lives in `n8n-pline/` in this repo (`grepsr/pline.ai`). npm org `pline`, npm user `pline.ai`.
 4. Credential test: `GET /crawl/<nil uuid>`, 404 = valid key, 401/403 = invalid. Implemented as a declarative `test` with `ignoreHttpStatusErrors` and `responseSuccessBody` rules on the error `code`, because `ICredentialTestFunctions` only offers the deprecated request helper.
 5. Batch Scrape gets a "Get Results" operation: downloads the completed JSONL files and returns one item per line.
 6. Icon converted from `plugin/assets/icon.png` to SVG. Author Grepsr, dev@grepsr.com.

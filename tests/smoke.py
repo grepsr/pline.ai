@@ -66,8 +66,8 @@ class MockAPI(http.server.BaseHTTPRequestHandler):
 
 def check_skill(workdir, env):
     # Relocate the complete skill, without the repo, and launch from a different directory.
-    installed = workdir / 'installed skills' / 'pline-api'
-    shutil.copytree(ROOT / 'skills/pline-api', installed)
+    installed = workdir / 'installed skills' / 'pline-ai'
+    shutil.copytree(ROOT / 'skills/pline-ai', installed)
     script = installed / 'scripts/pline.py'
     caller = workdir / 'caller'
     caller.mkdir()
@@ -158,7 +158,7 @@ def check_mcp(workdir, env):
     try:
         info = rpc('initialize', {'protocolVersion': '2025-03-26', 'capabilities': {},
                                  'clientInfo': {'name': 'smoke', 'version': '1'}}, 1)
-        assert info['serverInfo']['name'] == 'pline.ai'
+        assert info['serverInfo']['name'] == 'pline-ai'
         assert info['serverInfo']['icons'][0]['src'].endswith('/favicon.png'), info['serverInfo']
         assert info['serverInfo']['websiteUrl'] == 'https://pline.ai', info['serverInfo']
         rpc('notifications/initialized', {})

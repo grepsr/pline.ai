@@ -14,12 +14,12 @@
     }
   ],
   "servers": {
-    "pline.ai": {
+    "pline-ai": {
       "type": "stdio",
       "command": "npx",
       "args": [
         "-y",
-        "pline-api"
+        "pline-ai"
       ],
       "env": {
         "PLINE_BASE_URL": "${input:pline-base-url}",

@@ -219,7 +219,7 @@ pub fn document(public_url: &str) -> Value {
             "license": {"name": "MIT", "identifier": "MIT"},
             "contact": {"url": "https://pline.ai"}
         },
-        "externalDocs": {"url": "https://github.com/grepsr/pline-api#readme"},
+        "externalDocs": {"url": "https://github.com/grepsr/pline.ai#readme"},
         "servers": [{"url": public_url}],
         "tags": [
             {"name": "mcp", "description": "Model Context Protocol"},

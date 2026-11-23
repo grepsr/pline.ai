@@ -10,10 +10,10 @@
     "url": "https://github.com/grepsr"
   },
   "homepage": "https://pline.ai",
-  "repository": "https://github.com/grepsr/pline-api",
+  "repository": "https://github.com/grepsr/pline.ai",
   "license": "MIT",
-  "documentationUrl": "https://github.com/grepsr/pline-api#readme",
-  "supportUrl": "https://github.com/grepsr/pline-api/issues",
+  "documentationUrl": "https://github.com/grepsr/pline.ai#readme",
+  "supportUrl": "https://github.com/grepsr/pline.ai/issues",
   "privacyPolicyUrl": "https://www.pline.ai/privacy-policy",
   "termsOfServiceUrl": "https://www.pline.ai/terms-of-service",
   "keywords": [
@@ -25,7 +25,7 @@
     "mcp"
   ],
   "mcpServers": {
-    "pline.ai": {
+    "pline-ai": {
       "type": "http",
       "url": "https://mcp.pline.ai/mcp"
     }

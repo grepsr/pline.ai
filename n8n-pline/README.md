@@ -215,4 +215,4 @@ The n8n CLI needs Node 22.12 or newer; on Node 22.11 prefix the commands with
 - [Pline API documentation](https://apidocs.pline.ai/)
 - [Pline API reference](https://apidocs.pline.ai/api-reference)
 - [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
-- [Issues](https://github.com/grepsr/pline-api/issues)
+- [Issues](https://github.com/grepsr/pline.ai/issues)

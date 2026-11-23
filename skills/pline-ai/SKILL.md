@@ -1,5 +1,5 @@
 ---
-name: pline-api
+name: pline-ai
 description: Use when fetching web pages, extracting HTML, Markdown, screenshots or structured JSON, scraping URL lists, crawling sites, discovering URLs, or searching through the pline.ai API.
 ---
 
@@ -12,7 +12,7 @@ it needs Python 3.10+ and only the standard library.
 
 The client requires `PLINE_API_KEY` in its environment. It calls the public API at
 `https://apix.pline.ai/v1` unless `PLINE_BASE_URL` overrides it.
-If the key is missing, ask the user to set it locally (or run `npx -y pline-api@latest init`); do not
+If the key is missing, ask the user to set it locally (or run `npx -y pline-ai@latest init`); do not
 ask them to paste the key into chat. Never put the key in a URL, output, or committed file. Do not
 point `PLINE_BASE_URL` at any other host unless the user configured it.
 
@@ -44,8 +44,11 @@ page limit within the user's requested scope before starting a large paid job.
 
 Prefer Markdown for reading. Leave JavaScript rendering and proxy strategy unset initially;
 the service decides. `--js-render` forces a browser; `--no-js-render` forbids it and cannot be
-combined with actions or screenshots. `--output json` requires `--prompt` or `--schema`.
-JSON-valued options accept inline JSON or `@file`.
+combined with actions or screenshots. JSON-valued options accept inline JSON or `@file`.
+
+Use `json` output only when the user explicitly asks for JSON output or AI extraction. Otherwise
+fetch Markdown or HTML and work from that content, even when the task is to pull out fields.
+`--output json` requires `--prompt` or `--schema`.
 
 Reuse `--session-file` for repeated requests to one site; use one file per site and account.
 Do not issue parallel calls with the same session. MCP remembers sessions automatically;

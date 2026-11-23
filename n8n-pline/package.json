@@ -3,7 +3,7 @@
 	"version": "0.3.10",
 	"description": "n8n community node for the Pline API: scrape pages, batch-scrape URL lists, crawl sites, map a site's URLs, and search the web.",
 	"license": "MIT",
-	"homepage": "https://github.com/grepsr/pline-api/tree/main/n8n-pline#readme",
+	"homepage": "https://github.com/grepsr/pline.ai/tree/main/n8n-pline#readme",
 	"keywords": [
 		"n8n-community-node-package",
 		"pline",
@@ -19,11 +19,11 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/grepsr/pline-api.git",
+		"url": "git+https://github.com/grepsr/pline.ai.git",
 		"directory": "n8n-pline"
 	},
 	"bugs": {
-		"url": "https://github.com/grepsr/pline-api/issues"
+		"url": "https://github.com/grepsr/pline.ai/issues"
 	},
 	"engines": {
 		"node": ">=20.15"

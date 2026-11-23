@@ -34,7 +34,9 @@ before a crawl is a good habit: it shows what a crawl would hit, for one cheap c
   requires. Pin `basic` for sites you know are open to keep cost down; pin `premium`
   when a site keeps failing under `auto` and the user accepts the higher cost.
 - `prompt` / `schema`: with `json` output, extract structured data. One of the two is required. A
-  list-shaped schema makes it a listing extraction and returns an array.
+  list-shaped schema makes it a listing extraction and returns an array. Use `json` output only
+  when the user explicitly asks for JSON output or AI extraction; otherwise fetch `markdown` or
+  `html` and work from that content, even when the task is to pull out fields.
 - `geolocation`: fetch the page as a visitor from that country.
 - `actions`: click/type/scroll before capture. Any action implies a browser and `GET` only.
 - `timeout`: per-request deadline in milliseconds (1000-60000). `wait_selector` and `wait_ms` add

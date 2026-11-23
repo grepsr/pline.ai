@@ -44,6 +44,8 @@ only when a site keeps failing and the caller accepts higher cost.
 `new_session=true` unless a fresh identity is actually wanted.
 - Prefer `markdown` for reading or LLM input; `html` only when markup matters. Pass `save_dir` for \
 anything but small pages when the server runs locally.
+- Use `json` output only when the user explicitly asks for JSON output or AI extraction; otherwise \
+fetch `markdown` or `html` and work from that content.
 - Quote `request_id` when reporting a problem. Read `pline://guide` for the full guidance and \
 `pline://reference` for every field and constraint.
 
@@ -210,7 +212,8 @@ fn default_num_results() -> u32 {
 struct FetchOptions {
     /// Formats to return, any combination of html, clean_html, links, markdown, clean_markdown, screenshot,
     /// screenshot_full_page, json. Default ["html"]. Returned under `data` as html_body, clean_html,
-    /// links, markdown, screenshot, screenshot_full_page, json.
+    /// links, markdown, screenshot, screenshot_full_page, json. Request json only when the user
+    /// explicitly asks for JSON output or AI extraction.
     #[serde(default)]
     output: Option<Vec<String>>,
     /// JavaScript rendering, three-way. Unset (default): the service decides, escalating to a browser
@@ -1275,7 +1278,7 @@ impl PlineServer {
 impl ServerHandler for PlineServer {
     fn get_info(&self) -> ServerConfig {
         let mut implementation = Implementation::from_build_env();
-        implementation.name = "pline.ai".to_string();
+        implementation.name = "pline-ai".to_string();
         implementation.title = Some("pline.ai".to_string());
         implementation.version = env!("CARGO_PKG_VERSION").to_string();
         implementation.description = Some(
