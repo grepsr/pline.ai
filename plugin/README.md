@@ -14,7 +14,7 @@ The plugin bundles two things:
 1. Install the plugin from the Claude directory, or in Claude Code (2.1.275 or later):
 
    ```text
-   /plugin install pline-ai --marketplace grepsr/pline-api
+   /plugin install pline-ai --marketplace grepsr/pline.ai
    ```
 2. When Claude first connects to the server, sign in with your pline.ai account.
 3. On the consent page, choose the pline.ai workspace the plugin should use, and approve.
@@ -55,14 +55,14 @@ pline.ai's [privacy policy](https://www.pline.ai/privacy-policy) applies to all 
 - **Third parties:** pages you ask to scrape or crawl are fetched from their own websites. Other
   sharing is covered by the privacy policy.
 - **Retention:** as set out in the privacy policy.
-- **Contact:** see the privacy policy, or open an issue at <https://github.com/grepsr/pline-api/issues>.
+- **Contact:** see the privacy policy, or open an issue at <https://github.com/grepsr/pline.ai/issues>.
 
 Terms of service: <https://www.pline.ai/terms-of-service>.
 
 ## Support
 
-Report problems at <https://github.com/grepsr/pline-api/issues>. Source, a local (stdio) version of the
-server, and setup for other MCP clients are in the [pline-api repository](https://github.com/grepsr/pline-api).
+Report problems at <https://github.com/grepsr/pline.ai/issues>. Source, a local (stdio) version of the
+server, and setup for other MCP clients are in the [pline.ai repository](https://github.com/grepsr/pline.ai).
 
 ## License
 

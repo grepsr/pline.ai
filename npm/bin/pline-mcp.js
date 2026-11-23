@@ -22,7 +22,7 @@ const path = require('node:path');
 
 const pkg = require('../package.json');
 
-const REPO = 'grepsr/pline-api';
+const REPO = 'grepsr/pline.ai';
 // Keep in sync with PLATFORMS in npm/build-platform-packages.py and the matrix in release.yml.
 const PLATFORMS = {
   'darwin-arm64': { pkg: '@pline/api-darwin-arm64', target: 'aarch64-apple-darwin', ext: 'tar.gz' },

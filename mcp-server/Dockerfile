@@ -40,9 +40,9 @@ COPY --from=builder /app/target/release/pline-mcp /usr/local/bin/pline-mcp
 LABEL io.modelcontextprotocol.server.name="io.github.grepsr/pline-ai" \
       org.opencontainers.image.title="pline.ai MCP server" \
       org.opencontainers.image.description="MCP server exposing the pline.ai scrape, crawl, batch, map, and search API." \
-      org.opencontainers.image.source="https://github.com/grepsr/pline-api" \
+      org.opencontainers.image.source="https://github.com/grepsr/pline.ai" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.documentation="https://github.com/grepsr/pline-api/blob/main/mcp-server/README.md"
+      org.opencontainers.image.documentation="https://github.com/grepsr/pline.ai/blob/main/mcp-server/README.md"
 
 ENV RUST_LOG=info
 

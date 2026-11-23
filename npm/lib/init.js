@@ -11,7 +11,7 @@ const path = require('node:path');
 const readline = require('node:readline');
 
 const DEFAULT_BASE_URL = 'https://apix.pline.ai/v1';
-const SKILL_SOURCE = 'grepsr/pline-api';
+const SKILL_SOURCE = 'grepsr/pline.ai';
 const SKILL_NAME = 'pline-ai';
 const WINDOWS = process.platform === 'win32';
 
@@ -305,7 +305,7 @@ async function init(argv) {
   const ids = opts.agents.length ? [...new Set(opts.agents)] : Object.keys(CLIENTS).filter((id) => CLIENTS[id].detect());
   if (!ids.length) {
     say('pline-ai init: found no supported MCP client (Claude Code, Codex, Cursor, VS Code, Claude Desktop, Windsurf).');
-    say('Install one, or name it with --agent. Manual setup: https://github.com/grepsr/pline-api#quick-install');
+    say('Install one, or name it with --agent. Manual setup: https://github.com/grepsr/pline.ai#quick-install');
     return 1;
   }
   const skillAgents = opts.skill ? [...new Set(ids.map((id) => CLIENTS[id].skillAgent).filter(Boolean))] : [];

@@ -9,7 +9,7 @@ hand, which credentials each step needs, and the prerequisites that gate everyth
 
 | Prerequisite | Why | Status |
 |---|---|---|
-| Public repository | The MCP Registry resolves `repository.url`; npm provenance attestations need a public repo; the Claude directory requires a public GitHub repository before a plugin bundle goes live; awesome lists, Glama, and `npx skills add` only read public repositories; GHCR images pushed from a private repository are private; the `ubuntu-*-arm` runners used for Linux arm64 and the arm64 image are free only for public repositories. | **Done.** `grepsr/pline-api` is public. |
+| Public repository | The MCP Registry resolves `repository.url`; npm provenance attestations need a public repo; the Claude directory requires a public GitHub repository before a plugin bundle goes live; awesome lists, Glama, and `npx skills add` only read public repositories; GHCR images pushed from a private repository are private; the `ubuntu-*-arm` runners used for Linux arm64 and the arm64 image are free only for public repositories. | **Done.** `grepsr/pline.ai` is public. |
 | Open-source license | The Claude directory blocks a plugin without a `LICENSE` file or `license` in `plugin.json`; npm warns without one; awesome-list maintainers and crates.io require one. | **Done.** MIT, in `LICENSE`, `mcp-server/Cargo.toml`, `npm/package.json`, `.claude-plugin/plugin.json`, and the README. |
 | Public GHCR package | The registry validates the OCI package anonymously. | Verify `pline-mcp` is public before publishing the MCP Registry entry. |
 | npm package names | Launcher: `pline-ai`; platform packages are scoped as `@pline/api-<os>-<cpu>` because npm's spam detection rejects new unscoped `*-win32-x64` names. | The `pline` npm org exists; `NPM_TOKEN` must have publish rights on it for the first scoped publish. |
@@ -143,7 +143,7 @@ server is distributed as a **plugin bundle**.
   can install without the directory:
 
   ```sh
-  claude plugin marketplace add grepsr/pline-api
+  claude plugin marketplace add grepsr/pline.ai
   claude plugin install pline-ai@pline-ai
   ```
 
@@ -151,7 +151,7 @@ server is distributed as a **plugin bundle**.
   (marketplace).
 - Submit at [claude.ai/directory/manage](https://claude.ai/directory/manage) from the Grepsr
   organization account (the first organization to submit a repository owns the listing):
-  **Submit new → Plugin bundle**, **Repository** `grepsr/pline-api`, **Plugin path** `plugin`, then
+  **Submit new → Plugin bundle**, **Repository** `grepsr/pline.ai`, **Plugin path** `plugin`, then
   **Validate**, fix anything **Blocking**, and **Submit for review**.
 - Expected holds, which a reviewer clears: `assets/icon.png` (an image the scanner cannot prove is
   never executed) and `NAME_CONFUSABLE` (`pline-ai` is within two characters of the unrelated
@@ -186,8 +186,8 @@ listing. Reviewers need a pline.ai test account with a workspace, an active API 
 
 - **Codex** (CLI, IDE extension, app) reads `~/.codex/config.toml`; the README's
   [Codex MCP section](README.md#codex-1) gives `codex mcp add` and an `env_vars` variant that keeps
-  the key out of the file. `npx skills add grepsr/pline-api -a codex` installs the skill.
-- `codex plugin marketplace add grepsr/pline-api` reads `.claude-plugin/marketplace.json` and installs
+  the key out of the file. `npx skills add grepsr/pline.ai -a codex` installs the skill.
+- `codex plugin marketplace add grepsr/pline.ai` reads `.claude-plugin/marketplace.json` and installs
   `plugin/`: Codex sees the hosted server as streamable HTTP at `https://mcp.pline.ai/mcp`; sign in
   with `codex mcp login pline-ai`.
 - **ChatGPT** and the shared OpenAI plugin directory (platform.openai.com/plugins) accept only a
@@ -201,9 +201,9 @@ folders of 70+ agents. It discovers `skills/pline-ai/SKILL.md` directly and also
 `.claude-plugin/marketplace.json`, so once the repository is public:
 
 ```sh
-npx skills add grepsr/pline-api            # prompts for agents; -g for user-wide, -y to accept
-npx skills add grepsr/pline-api -a cursor  # one agent
-npx skills add grepsr/pline-api --list     # show what it found
+npx skills add grepsr/pline.ai            # prompts for agents; -g for user-wide, -y to accept
+npx skills add grepsr/pline.ai -a cursor  # one agent
+npx skills add grepsr/pline.ai --list     # show what it found
 ```
 
 skills.sh lists repositories automatically from install activity; there is no submission form.
@@ -227,11 +227,11 @@ Its CI labels a PR `missing-glama` until the server is listed and passing on Gla
 [Glama](#6-glama) first and include the score badge after the link. Fork, add the line under
 **🔎 Search & Data Extraction** (or **📂 Browser Automation**, where other
 scrape/crawl/map servers appear) keeping alphabetical order by repository, and open a PR titled
-`Add grepsr/pline-api`. The legend markers: 🎖️ official, 🦀 Rust, ☁️ cloud service (the scraping
+`Add grepsr/pline.ai`. The legend markers: 🎖️ official, 🦀 Rust, ☁️ cloud service (the scraping
 runs on pline.ai), and the three OS badges because the server runs on all three.
 
 ```markdown
-- [grepsr/pline-api](https://github.com/grepsr/pline-api) [![grepsr/pline-api MCP server](https://glama.ai/mcp/servers/grepsr/pline-api/badges/score.svg)](https://glama.ai/mcp/servers/grepsr/pline-api) 🎖️ 🦀 ☁️ 🍎 🪟 🐧 - Scrape, batch-scrape, crawl, map and search the web through the pline.ai API, returning Markdown, HTML, screenshots or structured JSON with session reuse and background jobs.
+- [grepsr/pline.ai](https://github.com/grepsr/pline.ai) [![grepsr/pline.ai MCP server](https://glama.ai/mcp/servers/grepsr/pline-api/badges/score.svg)](https://glama.ai/mcp/servers/grepsr/pline-api) 🎖️ 🦀 ☁️ 🍎 🪟 🐧 - Scrape, batch-scrape, crawl, map and search the web through the pline.ai API, returning Markdown, HTML, screenshots or structured JSON with session reuse and background jobs.
 ```
 
 Typical turnaround is a few days to two weeks.
@@ -240,7 +240,7 @@ Typical turnaround is a few days to two weeks.
 
 This list does not accept pull requests. Submit at <https://mcpservers.org/submit> with:
 name `pline.ai`, category **Web Scraping**, the one-sentence description above, repository
-`https://github.com/grepsr/pline-api`, official registry name `io.github.grepsr/pline-ai`, remote
+`https://github.com/grepsr/pline.ai`, official registry name `io.github.grepsr/pline-ai`, remote
 connections unchecked (until a hosted endpoint exists), and a contact email. The free tier reviews
 within about two weeks.
 

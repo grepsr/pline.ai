@@ -282,7 +282,7 @@ async fn icon() -> impl IntoResponse {
 async fn landing() -> impl IntoResponse {
     (
         [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
-        r#"<!doctype html><html><head><meta charset="utf-8"><title>pline.ai MCP server</title><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/favicon.png"></head><body><p>pline.ai MCP server. Connect an MCP client to <code>/mcp</code>. OpenAPI: <a href="/openapi.json">/openapi.json</a>. Docs: <a href="https://github.com/grepsr/pline-api#readme">github.com/grepsr/pline-api</a></p></body></html>"#,
+        r#"<!doctype html><html><head><meta charset="utf-8"><title>pline.ai MCP server</title><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/favicon.png"></head><body><p>pline.ai MCP server. Connect an MCP client to <code>/mcp</code>. OpenAPI: <a href="/openapi.json">/openapi.json</a>. Docs: <a href="https://github.com/grepsr/pline.ai#readme">github.com/grepsr/pline.ai</a></p></body></html>"#,
     )
 }
 

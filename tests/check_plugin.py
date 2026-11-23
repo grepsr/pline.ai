@@ -7,7 +7,7 @@ MCP server is the hosted https://mcp.pline.ai/mcp, where the user signs in with 
 of the pline-ai skill is MCP-only: it must not read a credential from the user's machine (no
 PLINE_API_KEY, no direct API host, no bundled scripts). The directory holds any plugin that pairs a
 local credential read with a remote destination. The standalone skill in skills/pline-ai, which
-`npx skills add grepsr/pline-api` installs, keeps its Python client and API reference.
+`npx skills add grepsr/pline.ai` installs, keeps its Python client and API reference.
 """
 
 import json
@@ -21,8 +21,8 @@ SKILL = ROOT / 'skills/pline-ai'
 PLUGIN_SKILL = PLUGIN / 'skills/pline-ai'
 HOSTED_MCP_URL = 'https://mcp.pline.ai/mcp'
 LISTING_LINKS = {
-    'documentationUrl': 'https://github.com/grepsr/pline-api#readme',
-    'supportUrl': 'https://github.com/grepsr/pline-api/issues',
+    'documentationUrl': 'https://github.com/grepsr/pline.ai#readme',
+    'supportUrl': 'https://github.com/grepsr/pline.ai/issues',
     'privacyPolicyUrl': 'https://www.pline.ai/privacy-policy',
     'termsOfServiceUrl': 'https://www.pline.ai/terms-of-service',
 }

@@ -2,7 +2,7 @@
 name = "pline-mcp"
 version = "0.3.12"
 edition = "2021"
-repository = "https://github.com/grepsr/pline-api"
+repository = "https://github.com/grepsr/pline.ai"
 license = "MIT"
 description = "MCP server exposing the pline.ai scrape, crawl, batch, map, and search API."
 

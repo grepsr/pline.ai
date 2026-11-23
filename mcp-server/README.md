@@ -84,8 +84,8 @@ API at `https://apix.pline.ai/v1` unless `PLINE_BASE_URL` overrides it.
 From the repository root:
 
 ```sh
-git clone https://github.com/grepsr/pline-api.git
-cd pline-api
+git clone https://github.com/grepsr/pline.ai.git
+cd pline.ai
 cargo build --manifest-path mcp-server/Cargo.toml --release --locked
 cp .env.example .env
 ```

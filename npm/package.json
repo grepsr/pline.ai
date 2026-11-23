@@ -17,12 +17,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/grepsr/pline-api.git",
+    "url": "git+https://github.com/grepsr/pline.ai.git",
     "directory": "npm"
   },
-  "homepage": "https://github.com/grepsr/pline-api#readme",
+  "homepage": "https://github.com/grepsr/pline.ai#readme",
   "bugs": {
-    "url": "https://github.com/grepsr/pline-api/issues"
+    "url": "https://github.com/grepsr/pline.ai/issues"
   },
   "keywords": [
     "mcp",

@@ -1,6 +1,6 @@
 # pline.ai
 
-MCP server for [pline.ai](https://github.com/grepsr/pline-api): scrape pages, crawl sites,
+MCP server for [pline.ai](https://github.com/grepsr/pline.ai): scrape pages, crawl sites,
 batch-scrape URL lists, map a site's URLs, and search the web, all through your own pline.ai API key.
 
 Set up every MCP client on your machine, plus the agent skill, in one step:
@@ -45,5 +45,5 @@ Tools: `scrape`, `batch_scrape_start`, `batch_scrape_status`, `batch_scrape_canc
 
 Client-specific setup (Cursor, VS Code, Claude Desktop, Claude Code, Windsurf, Docker, prebuilt
 binaries) and the agent skill are in the
-[repository README](https://github.com/grepsr/pline-api#readme). MCP Registry name:
+[repository README](https://github.com/grepsr/pline.ai#readme). MCP Registry name:
 `io.github.grepsr/pline-ai`.

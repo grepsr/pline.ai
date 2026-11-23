@@ -6,12 +6,12 @@
 	"resources": {
 		"credentialDocumentation": [
 			{
-				"url": "https://github.com/grepsr/pline-api/tree/main/n8n-pline#credentials"
+				"url": "https://github.com/grepsr/pline.ai/tree/main/n8n-pline#credentials"
 			}
 		],
 		"primaryDocumentation": [
 			{
-				"url": "https://github.com/grepsr/pline-api/tree/main/n8n-pline#readme"
+				"url": "https://github.com/grepsr/pline.ai/tree/main/n8n-pline#readme"
 			}
 		]
 	}

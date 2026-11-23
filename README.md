@@ -71,7 +71,7 @@ To set up the two integrations by hand instead, use either or both of the follow
 **Agent skill** (instructions plus a Python CLI the agent runs):
 
 ```sh
-npx skills add grepsr/pline-api
+npx skills add grepsr/pline.ai
 ```
 
 This copies [`skills/pline-ai`](skills/pline-ai/SKILL.md) from this GitHub repository into your
@@ -113,7 +113,7 @@ Every MCP client takes the same configuration:
 | Client | One step |
 |---|---|
 | Claude Code | `claude mcp add pline-ai -e PLINE_BASE_URL=https://apix.pline.ai/v1 -e PLINE_API_KEY=your-own-api-key -- npx -y pline-ai` |
-| Claude Code plugin (skill + hosted server) | `claude plugin marketplace add grepsr/pline-api` then `claude plugin install pline-ai@pline-ai`; sign in with your pline.ai account on first use |
+| Claude Code plugin (skill + hosted server) | `claude plugin marketplace add grepsr/pline.ai` then `claude plugin install pline-ai@pline-ai`; sign in with your pline.ai account on first use |
 | Cursor | [![Add pline.ai to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=pline-ai&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsInBsaW5lLWFpIl0sImVudiI6eyJQTElORV9CQVNFX1VSTCI6Imh0dHBzOi8vYXBpeC5wbGluZS5haS92MSIsIlBMSU5FX0FQSV9LRVkiOiJ5b3VyLW93bi1hcGkta2V5In19) then replace `your-own-api-key` in Cursor's MCP settings |
 | VS Code | [![Install pline.ai in VS Code](https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect?url=vscode:mcp/install?%7B%22name%22%3A%22pline-ai%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22pline-ai%22%5D%2C%22env%22%3A%7B%22PLINE_BASE_URL%22%3A%22%24%7Binput%3Apline-base-url%7D%22%2C%22PLINE_API_KEY%22%3A%22%24%7Binput%3Apline-api-key%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22pline-base-url%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22pline.ai%20API%20base%20URL%22%2C%22default%22%3A%22https%3A%2F%2Fapix.pline.ai%2Fv1%22%7D%2C%7B%22id%22%3A%22pline-api-key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22pline.ai%20API%20key%22%2C%22password%22%3Atrue%7D%5D%7D) [![Install pline.ai in VS Code Insiders](https://img.shields.io/badge/VS_Code_Insiders-Install_Server-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect?url=vscode-insiders:mcp/install?%7B%22name%22%3A%22pline-ai%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22pline-ai%22%5D%2C%22env%22%3A%7B%22PLINE_BASE_URL%22%3A%22%24%7Binput%3Apline-base-url%7D%22%2C%22PLINE_API_KEY%22%3A%22%24%7Binput%3Apline-api-key%7D%22%7D%2C%22inputs%22%3A%5B%7B%22id%22%3A%22pline-base-url%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22pline.ai%20API%20base%20URL%22%2C%22default%22%3A%22https%3A%2F%2Fapix.pline.ai%2Fv1%22%7D%2C%7B%22id%22%3A%22pline-api-key%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22pline.ai%20API%20key%22%2C%22password%22%3Atrue%7D%5D%7D); VS Code prompts for the URL and key |
 | Codex (CLI, IDE extension, app) | `codex mcp add pline-ai --env PLINE_BASE_URL=https://apix.pline.ai/v1 --env PLINE_API_KEY=your-own-api-key -- npx -y pline-ai`; see [Codex](#codex-1) to keep the key out of the config file |
@@ -126,8 +126,8 @@ Opening this repository as a workspace configures the server automatically throu
 ## Clone and configure for source builds or skills
 
 ```sh
-git clone https://github.com/grepsr/pline-api.git
-cd pline-api
+git clone https://github.com/grepsr/pline.ai.git
+cd pline.ai
 cp .env.example .env
 ```
 
@@ -160,7 +160,7 @@ repository (not from npm) into the right folder for each agent it detects (add `
 install, `-a cursor` to pick agents):
 
 ```sh
-npx skills add grepsr/pline-api
+npx skills add grepsr/pline.ai
 ```
 
 To install by hand, copy the **whole directory**, not just `SKILL.md`:
@@ -188,7 +188,7 @@ the skill, Python, network access, and credentials configured in its own executi
 ### Prepare credentials and Python
 
 First complete [Clone and configure](#clone-and-configure-for-source-builds-or-skills), including
-loading `.env` in your shell. Run these commands from the cloned `pline-api` repository:
+loading `.env` in your shell. Run these commands from the cloned `pline.ai` repository:
 
 ```sh
 python3 --version
@@ -228,7 +228,7 @@ Alternatively, install the skill and the hosted MCP server together as the `plin
 pline.ai account the first time Claude uses it, so no API key is stored in Claude:
 
 ```sh
-claude plugin marketplace add grepsr/pline-api
+claude plugin marketplace add grepsr/pline.ai
 claude plugin install pline-ai@pline-ai
 ```
 
@@ -442,19 +442,19 @@ Use `--help` on any command for flags. For wire-level examples, see the skill's
 
 ## Download the MCP binary
 
-Download a prebuilt binary from [pline.ai MCP v0.3.12](https://github.com/grepsr/pline-api/releases/tag/v0.3.12)
+Download a prebuilt binary from [pline.ai MCP v0.3.12](https://github.com/grepsr/pline.ai/releases/tag/v0.3.12)
 using the links below. No Rust installation is needed. See
-[GitHub Releases](https://github.com/grepsr/pline-api/releases) for all versions.
+[GitHub Releases](https://github.com/grepsr/pline.ai/releases) for all versions.
 
 | Platform | Download |
 |---|---|
-| macOS Apple Silicon | [pline-mcp-v0.3.12-aarch64-apple-darwin.tar.gz](https://github.com/grepsr/pline-api/releases/download/v0.3.12/pline-mcp-v0.3.12-aarch64-apple-darwin.tar.gz) |
-| macOS Intel | [pline-mcp-v0.3.12-x86_64-apple-darwin.tar.gz](https://github.com/grepsr/pline-api/releases/download/v0.3.12/pline-mcp-v0.3.12-x86_64-apple-darwin.tar.gz) |
-| Linux x64, glibc 2.35+ (Ubuntu 22.04 or newer) | [pline-mcp-v0.3.12-x86_64-unknown-linux-gnu.tar.gz](https://github.com/grepsr/pline-api/releases/download/v0.3.12/pline-mcp-v0.3.12-x86_64-unknown-linux-gnu.tar.gz) |
-| Linux arm64, glibc 2.35+ (Ubuntu 22.04 or newer) | [pline-mcp-v0.3.12-aarch64-unknown-linux-gnu.tar.gz](https://github.com/grepsr/pline-api/releases/download/v0.3.12/pline-mcp-v0.3.12-aarch64-unknown-linux-gnu.tar.gz) |
-| Windows x64 | [pline-mcp-v0.3.12-x86_64-pc-windows-msvc.zip](https://github.com/grepsr/pline-api/releases/download/v0.3.12/pline-mcp-v0.3.12-x86_64-pc-windows-msvc.zip) |
+| macOS Apple Silicon | [pline-mcp-v0.3.12-aarch64-apple-darwin.tar.gz](https://github.com/grepsr/pline.ai/releases/download/v0.3.12/pline-mcp-v0.3.12-aarch64-apple-darwin.tar.gz) |
+| macOS Intel | [pline-mcp-v0.3.12-x86_64-apple-darwin.tar.gz](https://github.com/grepsr/pline.ai/releases/download/v0.3.12/pline-mcp-v0.3.12-x86_64-apple-darwin.tar.gz) |
+| Linux x64, glibc 2.35+ (Ubuntu 22.04 or newer) | [pline-mcp-v0.3.12-x86_64-unknown-linux-gnu.tar.gz](https://github.com/grepsr/pline.ai/releases/download/v0.3.12/pline-mcp-v0.3.12-x86_64-unknown-linux-gnu.tar.gz) |
+| Linux arm64, glibc 2.35+ (Ubuntu 22.04 or newer) | [pline-mcp-v0.3.12-aarch64-unknown-linux-gnu.tar.gz](https://github.com/grepsr/pline.ai/releases/download/v0.3.12/pline-mcp-v0.3.12-aarch64-unknown-linux-gnu.tar.gz) |
+| Windows x64 | [pline-mcp-v0.3.12-x86_64-pc-windows-msvc.zip](https://github.com/grepsr/pline.ai/releases/download/v0.3.12/pline-mcp-v0.3.12-x86_64-pc-windows-msvc.zip) |
 
-Download [SHA256SUMS](https://github.com/grepsr/pline-api/releases/download/v0.3.12/SHA256SUMS)
+Download [SHA256SUMS](https://github.com/grepsr/pline.ai/releases/download/v0.3.12/SHA256SUMS)
 and compare the archive's SHA-256 hash with its line in that file: use `shasum -a 256 FILE`
 on macOS, `sha256sum FILE` on Linux, or `Get-FileHash FILE -Algorithm SHA256` in PowerShell.
 Extract the archive into a permanent folder and use the executable's absolute path in the MCP
@@ -542,7 +542,7 @@ Or install the skill together with the **hosted** server as the `pline-ai` plugi
 storing an API key:
 
 ```sh
-claude plugin marketplace add grepsr/pline-api
+claude plugin marketplace add grepsr/pline.ai
 claude plugin install pline-ai@pline-ai
 ```
 
@@ -572,7 +572,7 @@ PLINE_BASE_URL = "https://apix.pline.ai/v1"
 ```
 
 Check it with `codex mcp list`. To use the hosted server with OAuth instead, add this repository's
-plugin (`codex plugin marketplace add grepsr/pline-api`, then `codex plugin add pline-ai@pline-ai`) and
+plugin (`codex plugin marketplace add grepsr/pline.ai`, then `codex plugin add pline-ai@pline-ai`) and
 sign in with `codex mcp login pline-ai`; it brings the skill along.
 
 ### Docker

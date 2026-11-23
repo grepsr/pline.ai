@@ -104,7 +104,7 @@ def check_full_setup(temp):
     assert 'codex mcp remove pline-api' in calls, 'the entry under the old name must be dropped'
     assert f'codex mcp add pline-ai --env PLINE_BASE_URL={URL} --env PLINE_API_KEY={KEY} -- npx -y pline-ai' in calls
     skill = [c for c in calls if c.startswith('npx ')]
-    assert skill == ['npx -y skills add grepsr/pline-api --skill pline-ai -a claude-code -a codex -a cursor '
+    assert skill == ['npx -y skills add grepsr/pline.ai --skill pline-ai -a claude-code -a codex -a cursor '
                      '-a github-copilot -a windsurf -g -y'], skill
     assert KEY not in result.stderr, 'the key must never be printed'
 
