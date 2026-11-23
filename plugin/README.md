@@ -6,7 +6,7 @@ The plugin bundles two things:
 
 - **The pline.ai MCP server**, hosted at `https://mcp.pline.ai/mcp`. It works wherever Claude
   supports remote MCP servers, including claude.ai, Cowork, and Claude Code.
-- **The `pline-api` agent skill**, which teaches Claude when to use each tool, how to scope crawls,
+- **The `pline-ai` agent skill**, which teaches Claude when to use each tool, how to scope crawls,
   reuse scrape sessions, extract structured JSON, and follow long-running jobs to completion.
 
 ## Getting started

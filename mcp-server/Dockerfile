@@ -37,7 +37,7 @@ COPY --from=builder /app/target/release/pline-mcp /usr/local/bin/pline-mcp
 
 # The MCP Registry verifies ownership of OCI packages through this label; its value must equal
 # the `name` in the repository's server.json.
-LABEL io.modelcontextprotocol.server.name="io.github.grepsr/pline-api" \
+LABEL io.modelcontextprotocol.server.name="io.github.grepsr/pline-ai" \
       org.opencontainers.image.title="pline.ai MCP server" \
       org.opencontainers.image.description="MCP server exposing the pline.ai scrape, crawl, batch, map, and search API." \
       org.opencontainers.image.source="https://github.com/grepsr/pline-api" \

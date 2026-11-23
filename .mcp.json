@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "pline.ai": {
+    "pline-ai": {
       "command": "cargo",
       "args": ["run", "--quiet", "--release", "--locked", "--manifest-path", "mcp-server/Cargo.toml", "--", "--stdio"],
       "env": {

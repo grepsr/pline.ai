@@ -1,5 +1,5 @@
 ---
-name: pline-api
+name: pline-ai
 description: Use when fetching web pages, extracting HTML, Markdown, screenshots or structured JSON, scraping URL lists, crawling sites, discovering URLs, or searching through the pline.ai API.
 ---
 
@@ -31,7 +31,11 @@ page limit within the user's requested scope before starting a large paid job.
 
 Prefer Markdown for reading. Leave `js_render` and `proxy_strategy` unset initially; the service
 decides. `js_render=true` forces a browser; `js_render=false` forbids it and cannot be combined with
-actions or screenshots. JSON output requires `prompt` or `schema`.
+actions or screenshots.
+
+Use `json` output only when the user explicitly asks for JSON output or AI extraction. Otherwise
+fetch Markdown or HTML and work from that content, even when the task is to pull out fields.
+JSON output requires `prompt` or `schema`.
 
 The server remembers a session per host and reuses it automatically; pass `new_session=true` only
 when a fresh identity is needed. Do not issue parallel calls that share one session.

@@ -25,7 +25,7 @@
     "mcp"
   ],
   "mcpServers": {
-    "pline.ai": {
+    "pline-ai": {
       "type": "http",
       "url": "https://mcp.pline.ai/mcp"
     }

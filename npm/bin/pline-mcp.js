@@ -3,14 +3,14 @@
 
 // Launcher for the pline.ai MCP server. The server itself is a native Rust binary; this script
 // finds the right build for the current platform and runs it with the caller's arguments and
-// environment, so `npx -y pline-api` works like any Node-based MCP server.
+// environment, so `npx -y pline-ai` works like any Node-based MCP server.
 //
 // Resolution order:
 //   1. PLINE_MCP_BINARY, an explicit path (development and tests).
 //   2. The platform package installed through optionalDependencies, e.g. @pline/api-darwin-arm64.
 //   3. A cached download of the matching GitHub Release archive, verified against SHA256SUMS.
 //
-// `pline-api init` runs the interactive client setup in ../lib/init.js instead of the server.
+// `pline-ai init` runs the interactive client setup in ../lib/init.js instead of the server.
 //
 // Everything this script prints goes to stderr: stdout is the MCP stdio channel.
 
@@ -170,7 +170,7 @@ async function main() {
   // Run by hand in a terminal, the server just waits for MCP messages on stdin; say so.
   if (!args.length && process.stdin.isTTY) {
     log('this is the pline.ai MCP server; it waits for an MCP client on stdin and prints nothing.');
-    log('To add it to your MCP clients and install the agent skill, run: npx -y pline-api@latest init');
+    log('To add it to your MCP clients and install the agent skill, run: npx -y pline-ai@latest init');
     log('Press Ctrl+C to exit.');
     if (!process.env.PLINE_API_KEY) {
       log('PLINE_API_KEY is not set, so tool calls will fail until it is.');

@@ -4,9 +4,9 @@
 
 The plugin is submitted from its own folder so the directory scans only what the plugin ships. Its
 MCP server is the hosted https://mcp.pline.ai/mcp, where the user signs in with OAuth, so its copy
-of the pline-api skill is MCP-only: it must not read a credential from the user's machine (no
+of the pline-ai skill is MCP-only: it must not read a credential from the user's machine (no
 PLINE_API_KEY, no direct API host, no bundled scripts). The directory holds any plugin that pairs a
-local credential read with a remote destination. The standalone skill in skills/pline-api, which
+local credential read with a remote destination. The standalone skill in skills/pline-ai, which
 `npx skills add grepsr/pline-api` installs, keeps its Python client and API reference.
 """
 
@@ -17,8 +17,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / 'plugin'
-SKILL = ROOT / 'skills/pline-api'
-PLUGIN_SKILL = PLUGIN / 'skills/pline-api'
+SKILL = ROOT / 'skills/pline-ai'
+PLUGIN_SKILL = PLUGIN / 'skills/pline-ai'
 HOSTED_MCP_URL = 'https://mcp.pline.ai/mcp'
 LISTING_LINKS = {
     'documentationUrl': 'https://github.com/grepsr/pline-api#readme',
@@ -50,15 +50,15 @@ def check():
     problems = []
 
     if not (PLUGIN_SKILL / 'SKILL.md').is_file():
-        problems.append('plugin/skills/pline-api/SKILL.md is missing')
+        problems.append('plugin/skills/pline-ai/SKILL.md is missing')
     else:
         ours, theirs = frontmatter(PLUGIN_SKILL / 'SKILL.md'), frontmatter(SKILL / 'SKILL.md')
         for key in ('name', 'description'):
             if ours.get(key) != theirs.get(key):
-                problems.append(f'plugin skill {key} differs from skills/pline-api: {ours.get(key)!r} != {theirs.get(key)!r}')
+                problems.append(f'plugin skill {key} differs from skills/pline-ai: {ours.get(key)!r} != {theirs.get(key)!r}')
     for rel in ('agents/openai.yaml',):
         if (PLUGIN_SKILL / rel).read_bytes() != (SKILL / rel).read_bytes():
-            problems.append(f'plugin/skills/pline-api/{rel} differs from skills/pline-api/{rel}')
+            problems.append(f'plugin/skills/pline-ai/{rel} differs from skills/pline-ai/{rel}')
 
     for path in sorted(PLUGIN.rglob('*')):
         if not path.is_file() or path.suffix in {'.png', '.jpg', '.jpeg', '.gif', '.webp'}:

@@ -1,7 +1,7 @@
 'use strict';
 
-// `npx -y pline-api init`: one command that registers the pline.ai MCP server with every MCP client
-// it finds and installs the pline-api agent skill. The server itself never prompts for anything; this
+// `npx -y pline-ai init`: one command that registers the pline.ai MCP server with every MCP client
+// it finds and installs the pline-ai agent skill. The server itself never prompts for anything; this
 // is the interactive setup step. Everything goes to stderr except the help text.
 
 const { spawnSync } = require('node:child_process');
@@ -12,12 +12,12 @@ const readline = require('node:readline');
 
 const DEFAULT_BASE_URL = 'https://apix.pline.ai/v1';
 const SKILL_SOURCE = 'grepsr/pline-api';
-const SKILL_NAME = 'pline-api';
+const SKILL_NAME = 'pline-ai';
 const WINDOWS = process.platform === 'win32';
 
-const HELP = `usage: npx -y pline-api@latest init [options]
+const HELP = `usage: npx -y pline-ai@latest init [options]
 
-Registers the pline.ai MCP server with your MCP clients and installs the pline-api agent skill.
+Registers the pline.ai MCP server with your MCP clients and installs the pline-ai agent skill.
 With no --agent, it sets up every supported client found on this machine.
 
   -a, --agent <id>   only this client; repeat for several. One of:
@@ -61,8 +61,8 @@ function run(command, args, options = {}) {
 // The stdio command each file-based client runs. Windows GUI clients start npx through cmd.
 function serverCommand() {
   return WINDOWS
-    ? { command: 'cmd', args: ['/c', 'npx', '-y', 'pline-api'] }
-    : { command: 'npx', args: ['-y', 'pline-api'] };
+    ? { command: 'cmd', args: ['/c', 'npx', '-y', 'pline-ai'] }
+    : { command: 'npx', args: ['-y', 'pline-ai'] };
 }
 
 function vscodeUserDir() {
@@ -89,18 +89,22 @@ const CLIENTS = {
       ['mcp', 'remove', 'pline-ai', '--scope', 'user'],
       ['mcp', 'add', 'pline-ai', '--scope', 'user',
         '-e', `PLINE_BASE_URL=${ctx.baseUrl}`, '-e', `PLINE_API_KEY=${ctx.apiKey}`,
-        '--', ...(WINDOWS ? ['cmd', '/c'] : []), 'npx', '-y', 'pline-api']),
+        '--', ...(WINDOWS ? ['cmd', '/c'] : []), 'npx', '-y', 'pline-ai']),
   },
   codex: {
     label: 'Codex',
     detect: () => onPath('codex'),
     skillAgent: 'codex',
-    where: () => 'codex mcp add pline-api (~/.codex/config.toml)',
-    configure: (ctx) => configureCli(ctx, 'codex', 'pline-api',
-      ['mcp', 'remove', 'pline-api'],
-      ['mcp', 'add', 'pline-api',
-        '--env', `PLINE_BASE_URL=${ctx.baseUrl}`, '--env', `PLINE_API_KEY=${ctx.apiKey}`,
-        '--', 'npx', '-y', 'pline-api']),
+    where: () => 'codex mcp add pline-ai (~/.codex/config.toml)',
+    configure: (ctx) => {
+      // Drop the entry earlier releases registered under the old `pline-api` name.
+      if (!ctx.dryRun) run('codex', ['mcp', 'remove', 'pline-api']);
+      return configureCli(ctx, 'codex', 'pline-ai',
+        ['mcp', 'remove', 'pline-ai'],
+        ['mcp', 'add', 'pline-ai',
+          '--env', `PLINE_BASE_URL=${ctx.baseUrl}`, '--env', `PLINE_API_KEY=${ctx.apiKey}`,
+          '--', 'npx', '-y', 'pline-ai']);
+    },
   },
   cursor: {
     label: 'Cursor',
@@ -181,13 +185,15 @@ function configureFile(ctx, file, section, entry, inputs) {
     }
   }
   const servers = config[section] && typeof config[section] === 'object' ? config[section] : {};
-  const action = servers['pline.ai'] ? 'updated' : 'added';
-  config[section] = { ...servers, 'pline.ai': entry };
+  // Earlier releases registered the server as `pline.ai`; replace that entry instead of adding a second.
+  const { 'pline.ai': legacy, ...kept } = servers;
+  const action = kept['pline-ai'] || legacy ? 'updated' : 'added';
+  config[section] = { ...kept, 'pline-ai': entry };
   if (inputs) {
     const ids = new Set(inputs.map((input) => input.id));
     config.inputs = [...(Array.isArray(config.inputs) ? config.inputs : []).filter((input) => !ids.has(input && input.id)), ...inputs];
   }
-  if (ctx.dryRun) return `would ${action === 'added' ? 'add' : 'update'} pline.ai in ${file}`;
+  if (ctx.dryRun) return `would ${action === 'added' ? 'add' : 'update'} pline-ai in ${file}`;
 
   fs.mkdirSync(path.dirname(file), { recursive: true });
   let backup = '';
@@ -200,7 +206,7 @@ function configureFile(ctx, file, section, entry, inputs) {
   fs.writeFileSync(tmp, `${JSON.stringify(config, null, 2)}\n`, { mode: 0o600 });
   fs.renameSync(tmp, file);
   if (!WINDOWS) fs.chmodSync(file, 0o600);
-  return `${action} pline.ai in ${file}${backup ? ` (backup: ${path.basename(backup)})` : ''}`;
+  return `${action} pline-ai in ${file}${backup ? ` (backup: ${path.basename(backup)})` : ''}`;
 }
 
 function installSkill(ctx, agents) {
@@ -287,7 +293,7 @@ async function init(argv) {
   try {
     opts = parseArgs(argv);
   } catch (error) {
-    say(`pline-api init: ${error.message}\n`);
+    say(`pline-ai init: ${error.message}\n`);
     process.stderr.write(HELP);
     return 2;
   }
@@ -298,26 +304,26 @@ async function init(argv) {
 
   const ids = opts.agents.length ? [...new Set(opts.agents)] : Object.keys(CLIENTS).filter((id) => CLIENTS[id].detect());
   if (!ids.length) {
-    say('pline-api init: found no supported MCP client (Claude Code, Codex, Cursor, VS Code, Claude Desktop, Windsurf).');
+    say('pline-ai init: found no supported MCP client (Claude Code, Codex, Cursor, VS Code, Claude Desktop, Windsurf).');
     say('Install one, or name it with --agent. Manual setup: https://github.com/grepsr/pline-api#quick-install');
     return 1;
   }
   const skillAgents = opts.skill ? [...new Set(ids.map((id) => CLIENTS[id].skillAgent).filter(Boolean))] : [];
 
-  say('pline-api init will:');
+  say('pline-ai init will:');
   if (opts.mcp) {
     for (const id of ids) {
       const client = CLIENTS[id];
       say(`  - register the pline.ai MCP server with ${client.label} (${client.file ? client.file() : client.where()})`);
     }
   }
-  if (skillAgents.length) say(`  - install the pline-api skill with skills.sh for: ${skillAgents.join(', ')}`);
+  if (skillAgents.length) say(`  - install the pline-ai skill with skills.sh for: ${skillAgents.join(', ')}`);
   say(`  API base URL: ${opts.baseUrl}`);
 
   const interactive = Boolean(process.stdin.isTTY);
   if (!opts.yes && !opts.dryRun) {
     if (!interactive) {
-      say('pline-api init: not a terminal; re-run with --yes to apply these changes.');
+      say('pline-ai init: not a terminal; re-run with --yes to apply these changes.');
       return 1;
     }
     const answer = await ask('Continue? [Y/n] ');
@@ -331,7 +337,7 @@ async function init(argv) {
   const needsKey = opts.mcp && ids.some((id) => CLIENTS[id].needsKey !== false);
   if (needsKey && !apiKey && !opts.dryRun) {
     if (!interactive) {
-      say('pline-api init: set PLINE_API_KEY to your pline.ai API key (no terminal to prompt in).');
+      say('pline-ai init: set PLINE_API_KEY to your pline.ai API key (no terminal to prompt in).');
       return 1;
     }
     try {
@@ -341,7 +347,7 @@ async function init(argv) {
       return 1;
     }
     if (!apiKey) {
-      say('pline-api init: no API key entered; nothing changed.');
+      say('pline-ai init: no API key entered; nothing changed.');
       return 1;
     }
   }

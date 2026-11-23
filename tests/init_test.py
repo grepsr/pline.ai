@@ -1,4 +1,4 @@
-"""Test `pline-api init` against a throwaway home directory and stand-in client CLIs.
+"""Test `pline-ai init` against a throwaway home directory and stand-in client CLIs.
 
     python3 tests/init_test.py
 
@@ -68,7 +68,8 @@ def check_full_setup(temp):
     home, log = fresh_home(temp, 'full')
     vscode, desktop = layout(home)
     windsurf = home / '.codeium/windsurf/mcp_config.json'
-    windsurf.write_text(json.dumps({'mcpServers': {'other': {'command': 'other'}}}), encoding='utf-8')
+    windsurf.write_text(json.dumps({'mcpServers': {'other': {'command': 'other'}, 'pline.ai': {'command': 'old'}}}),
+                        encoding='utf-8')
     (vscode / 'mcp.json').write_text(json.dumps({'servers': {}, 'inputs': [{'id': 'keep-me', 'type': 'promptString'}]}),
                                      encoding='utf-8')
 
@@ -76,32 +77,34 @@ def check_full_setup(temp):
     assert result.returncode == 0, result.stderr
 
     cursor = json.loads((home / '.cursor/mcp.json').read_text())
-    assert cursor['mcpServers']['pline.ai'] == {
-        'command': 'npx', 'args': ['-y', 'pline-api'], 'env': {'PLINE_BASE_URL': URL, 'PLINE_API_KEY': KEY}}
+    assert cursor['mcpServers']['pline-ai'] == {
+        'command': 'npx', 'args': ['-y', 'pline-ai'], 'env': {'PLINE_BASE_URL': URL, 'PLINE_API_KEY': KEY}}
     assert stat.S_IMODE((home / '.cursor/mcp.json').stat().st_mode) == 0o600
 
     merged = json.loads(windsurf.read_text())
     assert merged['mcpServers']['other'] == {'command': 'other'}, 'existing servers must be kept'
-    assert merged['mcpServers']['pline.ai']['env']['PLINE_API_KEY'] == KEY
+    assert merged['mcpServers']['pline-ai']['env']['PLINE_API_KEY'] == KEY
+    assert 'pline.ai' not in merged['mcpServers'], 'the entry under the old name must be replaced'
     assert list(windsurf.parent.glob('mcp_config.json.pline-backup-*')), 'existing file must be backed up'
 
     code = json.loads((vscode / 'mcp.json').read_text())
-    assert code['servers']['pline.ai']['env']['PLINE_API_KEY'] == '${input:pline-api-key}'
+    assert code['servers']['pline-ai']['env']['PLINE_API_KEY'] == '${input:pline-api-key}'
     assert KEY not in (vscode / 'mcp.json').read_text(), 'VS Code must prompt for the key, not store it'
     assert [i['id'] for i in code['inputs']] == ['keep-me', 'pline-api-key']
 
     if desktop:
         claude_desktop = json.loads((desktop / 'claude_desktop_config.json').read_text())
-        assert claude_desktop['mcpServers']['pline.ai']['env']['PLINE_API_KEY'] == KEY
+        assert claude_desktop['mcpServers']['pline-ai']['env']['PLINE_API_KEY'] == KEY
 
     calls = log.read_text().splitlines()
     assert 'claude mcp remove pline-ai --scope user' in calls
     assert (f'claude mcp add pline-ai --scope user -e PLINE_BASE_URL={URL} -e PLINE_API_KEY={KEY} '
-            '-- npx -y pline-api') in calls, calls
-    assert 'codex mcp remove pline-api' in calls
-    assert f'codex mcp add pline-api --env PLINE_BASE_URL={URL} --env PLINE_API_KEY={KEY} -- npx -y pline-api' in calls
+            '-- npx -y pline-ai') in calls, calls
+    assert 'codex mcp remove pline-ai' in calls
+    assert 'codex mcp remove pline-api' in calls, 'the entry under the old name must be dropped'
+    assert f'codex mcp add pline-ai --env PLINE_BASE_URL={URL} --env PLINE_API_KEY={KEY} -- npx -y pline-ai' in calls
     skill = [c for c in calls if c.startswith('npx ')]
-    assert skill == ['npx -y skills add grepsr/pline-api --skill pline-api -a claude-code -a codex -a cursor '
+    assert skill == ['npx -y skills add grepsr/pline-api --skill pline-ai -a claude-code -a codex -a cursor '
                      '-a github-copilot -a windsurf -g -y'], skill
     assert KEY not in result.stderr, 'the key must never be printed'
 
@@ -112,9 +115,9 @@ def check_rerun_updates(temp):
     result = run(home, ['--yes', '--agent', 'cursor', '--mcp-only', '--base-url', 'https://example.test/v1'],
                  {'PLINE_API_KEY': 'new'})
     assert result.returncode == 0, result.stderr
-    env = json.loads((home / '.cursor/mcp.json').read_text())['mcpServers']['pline.ai']['env']
+    env = json.loads((home / '.cursor/mcp.json').read_text())['mcpServers']['pline-ai']['env']
     assert env == {'PLINE_BASE_URL': 'https://example.test/v1', 'PLINE_API_KEY': 'new'}
-    assert 'updated pline.ai' in result.stderr
+    assert 'updated pline-ai' in result.stderr
 
 
 def check_invalid_json_is_left_alone(temp):
@@ -131,7 +134,7 @@ def check_dry_run_and_guards(temp):
     home, log = fresh_home(temp, 'guards')
     result = run(home, ['--dry-run'])
     assert result.returncode == 0, result.stderr
-    assert 'would add pline.ai' in result.stderr and 'would run: claude mcp add' in result.stderr
+    assert 'would add pline-ai' in result.stderr and 'would run: claude mcp add' in result.stderr
     assert not (home / '.cursor/mcp.json').exists() and not log.exists(), 'dry run must change nothing'
 
     result = run(home, ['--dry-run'], {'PLINE_API_KEY': KEY})
