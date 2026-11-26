@@ -2,6 +2,8 @@
 
 Checked: server.json (MCP Registry), npm/package.json (npm launcher and its platform packages),
 plugin/.claude-plugin/plugin.json and .claude-plugin/marketplace.json (Claude directory plugin),
+plugin/.cursor-plugin/plugin.json and .cursor-plugin/marketplace.json (Cursor Marketplace plugin),
+plugin/.codex-plugin/plugin.json (OpenAI plugin directory, for ChatGPT and Codex),
 mcp-server/Dockerfile (registry ownership label), and both READMEs (release download links,
 archive names, pinned GHCR image tags and npm versions, one-click install links).
 
@@ -26,6 +28,9 @@ IMAGE = 'ghcr.io/grepsr/pline-mcp'
 NPM = 'pline-ai'
 READMES = ('README.md', 'mcp-server/README.md')
 PLUGIN_MANIFEST = 'plugin/.claude-plugin/plugin.json'
+CURSOR_MANIFEST = 'plugin/.cursor-plugin/plugin.json'
+CODEX_MANIFEST = 'plugin/.codex-plugin/plugin.json'
+MARKETPLACES = ('.claude-plugin/marketplace.json', '.cursor-plugin/marketplace.json')
 SEMVER = r'[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?'
 
 
@@ -85,10 +90,16 @@ def set_version(new):
             mcp['args'] = [re.sub(rf'^{re.escape(NPM)}@.*$', f'{NPM}@{new}', arg) for arg in mcp['args']]
     dump_json(PLUGIN_MANIFEST, plugin)
 
-    marketplace = load_json('.claude-plugin/marketplace.json')
-    for entry in marketplace.get('plugins', []):
-        entry['version'] = new
-    dump_json('.claude-plugin/marketplace.json', marketplace)
+    for path in (CURSOR_MANIFEST, CODEX_MANIFEST):
+        manifest = load_json(path)
+        manifest['version'] = new
+        dump_json(path, manifest)
+
+    for path in MARKETPLACES:
+        marketplace = load_json(path)
+        for entry in marketplace.get('plugins', []):
+            entry['version'] = new
+        dump_json(path, marketplace)
 
     for readme in READMES:
         text = read(readme)
@@ -156,10 +167,14 @@ def check(tag):
         for arg in mcp.get('args', []):
             if arg.startswith(f'{NPM}@'):
                 expect(f'plugin.json mcpServers[{name}] npx pin', arg, f'{NPM}@{version}')
-    marketplace = load_json('.claude-plugin/marketplace.json')
-    for entry in marketplace.get('plugins', []):
-        expect(f'marketplace.json plugin {entry.get("name")} version', entry.get('version'))
-        expect(f'marketplace.json plugin {entry.get("name")} name', entry.get('name'), plugin['name'])
+    for path in (CURSOR_MANIFEST, CODEX_MANIFEST):
+        manifest = load_json(path)
+        expect(f'{path} version', manifest.get('version'))
+        expect(f'{path} name', manifest.get('name'), plugin['name'])
+    for path in MARKETPLACES:
+        for entry in load_json(path).get('plugins', []):
+            expect(f'{path} plugin {entry.get("name")} version', entry.get('version'))
+            expect(f'{path} plugin {entry.get("name")} name', entry.get('name'), plugin['name'])
 
     for readme in READMES:
         text = read(readme)

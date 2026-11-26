@@ -42,7 +42,9 @@ adopted. GitHub OIDC tokens need no such care: they exist only for the duration 
 1. Bump the version with `python3 tests/check_versions.py --set X.Y.Z`. It rewrites
    `mcp-server/Cargo.toml` and `Cargo.lock`, `server.json` (top level, every `packages[].version`, the
    OCI image tag), `npm/package.json` (`version` and all five `optionalDependencies`),
-   `plugin/.claude-plugin/plugin.json` (`version`), `.claude-plugin/marketplace.json`, and the release links, archive names, and image tags in both
+   `plugin/.claude-plugin/plugin.json`, `plugin/.cursor-plugin/plugin.json`, and
+   `plugin/.codex-plugin/plugin.json` (`version`),
+   `.claude-plugin/marketplace.json` and `.cursor-plugin/marketplace.json`, and the release links, archive names, and image tags in both
    READMEs, then verifies. Without `--set` the same script runs in CI and fails on any mismatch.
 2. Push the tag `v<version>`. [release.yml](.github/workflows/release.yml) then:
    - builds and smoke-tests the five platform binaries (macOS arm64/x64, Linux x64/arm64, Windows x64);
@@ -174,10 +176,35 @@ listing. Reviewers need a pline.ai test account with a workspace, an active API 
   `PLINE_BASE_URL`/`PLINE_API_KEY` from the environment, VS Code prompts for them (the key is masked).
 - The README carries one-click **Add to Cursor** and **Install in VS Code** buttons with the same
   command, so users need Node.js but not Rust or Docker.
-- Listings (checked October 2026): the `cursor/mcp-servers` repository is archived. Cursor staff
-  recommend the community directory [cursor.directory](https://cursor.directory) for most
-  publishers; the curated [Cursor Marketplace](https://cursor.com/marketplace/publish) takes a form,
-  reviews manually, and replies by email. Nothing indicates Cursor ingests the official registry.
+- Nothing indicates Cursor ingests the official registry; the `cursor/mcp-servers` repository is
+  archived. Cursor lists **plugins** instead, and the `plugin/` folder is also a Cursor plugin.
+
+### Cursor plugin (the `plugin/` folder)
+
+- [`plugin/.cursor-plugin/plugin.json`](plugin/.cursor-plugin/plugin.json) is the Cursor manifest
+  for the same folder the Claude directory scans: same name, description, and links, `logo`
+  `assets/icon.png`, `skills` `skills/`, and `mcpServers` `.mcp.json`.
+  [`plugin/.mcp.json`](plugin/.mcp.json) declares the hosted `https://mcp.pline.ai/mcp` (OAuth, so no
+  `variables` and no API key). [`.cursor-plugin/marketplace.json`](.cursor-plugin/marketplace.json)
+  at the root points at `plugin`. `tests/check_plugin.py` keeps the Cursor manifest, `.mcp.json`, and
+  the Claude manifest in agreement; `tests/check_versions.py` keeps the versions in step.
+- Test locally before submitting: copy `plugin/` to `~/.cursor/plugins/local/pline-ai`, run
+  **Developer: Reload Window**, open **Customize**, and confirm the `pline-ai` skill and the
+  `plugin-pline-ai-pline-ai` MCP server appear and that the OAuth sign-in completes.
+- **cursor.directory first.** Cursor staff steer most publishers to the community directory before
+  the curated Marketplace (one Marketplace applicant was declined and told to list there first).
+  Submit at [cursor.directory/plugins/new](https://cursor.directory/plugins/new): sign in with GitHub,
+  paste `https://github.com/grepsr/pline.ai`, and submit. It auto-detects `skills/*/SKILL.md` and
+  `.mcp.json`.
+- **Cursor Marketplace.** Submit the repository URL at
+  [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish). The form always submits
+  as the signed-in individual; say in the description that this is a Grepsr company submission and
+  give the contact address (the manifest `author` already names Grepsr). Review is manual with no
+  SLA; follow up at marketplace-publishing@cursor.com, and on the Cursor forum if that goes quiet.
+- Checklist ([Cursor reference](https://cursor.com/docs/reference/plugins#submission-checklist)):
+  valid `.cursor-plugin/plugin.json`, kebab-case `name`, clear `description`, valid skill
+  frontmatter, logo committed and referenced by relative path, README, relative paths only, every
+  `${VAR}` declared (none are used), tested locally, `.cursor-plugin/marketplace.json` at the root.
 - VS Code's MCP gallery (`@mcp` in the Extensions view) is GitHub's curated
   [MCP Registry](https://github.com/mcp). Being in the official registry is the prerequisite; ask
   for inclusion by emailing partnerships@github.com until self-publication opens.
@@ -188,11 +215,51 @@ listing. Reviewers need a pline.ai test account with a workspace, an active API 
   [Codex MCP section](README.md#codex-1) gives `codex mcp add` and an `env_vars` variant that keeps
   the key out of the file. `npx skills add grepsr/pline.ai -a codex` installs the skill.
 - `codex plugin marketplace add grepsr/pline.ai` reads `.claude-plugin/marketplace.json` and installs
-  `plugin/`: Codex sees the hosted server as streamable HTTP at `https://mcp.pline.ai/mcp`; sign in
-  with `codex mcp login pline-ai`.
+  `plugin/`, using [`plugin/.codex-plugin/plugin.json`](plugin/.codex-plugin/plugin.json): Codex sees
+  the hosted server as streamable HTTP at `https://mcp.pline.ai/mcp`; sign in with
+  `codex mcp login pline-ai`. To try a branch without touching your own Codex setup:
+  `CODEX_HOME=$(mktemp -d) codex plugin marketplace add "$PWD"`, then
+  `codex plugin add pline-ai@pline-ai` and `codex mcp list`.
 - **ChatGPT** and the shared OpenAI plugin directory (platform.openai.com/plugins) accept only a
   remote HTTPS MCP endpoint with OAuth 2.1 or no auth; API-key headers and local stdio servers are
   not supported. `https://mcp.pline.ai/mcp` meets that requirement.
+
+### OpenAI plugin directory (ChatGPT and Codex)
+
+One listing covers ChatGPT and Codex. Claude directory approval does not carry over. Guides:
+[Submit a Claude Code plugin](https://developers.openai.com/plugins/guides/submit-claude-plugin),
+[Submit plugins](https://developers.openai.com/plugins/deploy/submission),
+[submission errors](https://developers.openai.com/plugins/deploy/submission-errors).
+
+- **Package.** `plugin/.codex-plugin/plugin.json` carries the listing (`interface`: display name,
+  30-character short description, category `Data & Analytics`, capabilities, three example prompts,
+  icon, and the website, support, privacy, and terms URLs) plus the review material under
+  `extensions.com.openai`: five positive and three negative test cases and the release notes, which
+  the portal imports from the ZIP. It reads the server from `plugin/.mcp.json`. `tests/check_plugin.py`
+  enforces the directory's limits; update `release_notes` with each submitted version. The package
+  must not declare hooks or apps.
+- **Build the ZIP** from the plugin folder, so `.codex-plugin/plugin.json` sits at the archive root:
+  `cd plugin && zip -r ../pline-ai-plugin.zip . -x '.DS_Store'`.
+- **One-time setup, outside the repository:**
+  - OpenAI organization owned by Grepsr, with business verification done in
+    [organization settings](https://platform.openai.com/settings/organization/general) so the listing
+    shows Grepsr; the submitter needs owner or **Apps Management Write**.
+  - Domain verification: serve the token the portal shows, as plain text, at
+    `https://mcp.pline.ai/.well-known/openai-apps-challenge` (the `pline-mcp` deployment in
+    `pline-hades-gitops`, or a parent origin on `pline.ai`).
+  - OAuth: advertise and allow the `openid` and `email` scopes and expose a UserInfo endpoint that
+    returns `email` and `email_verified: true` (Supabase). Registration is dynamic (DCR), so the
+    package carries no client ID or secret.
+  - Reviewer account: a dedicated pline.ai test account with a workspace and credits that signs in
+    without MFA, email codes, or magic links. Enter its credentials in the portal, never in the ZIP.
+  - A demo video of the test cases, at an accessible URL (`demo_recording_url`, or enter it in the
+    portal).
+- **Submit:** [platform.openai.com/plugins](https://platform.openai.com/plugins) → **Upload new or
+  existing plugin** → choose the Grepsr developer identity → upload the ZIP. Fix **Metadata &
+  Skills** findings, then **MCPs → Connect** (domain challenge, then OAuth sign-in with the test
+  account) and wait for the tool scan. Run every test case with the test account, complete **Review
+  details**, and **Submit for review**. After approval, **Publish plugin**. The server is rescanned
+  daily, so tool changes need no new ZIP; changes to metadata or the skill do.
 
 ## 5. Skill distribution (`npx skills add`)
 

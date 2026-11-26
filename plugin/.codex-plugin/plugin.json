@@ -1,0 +1,108 @@
+{
+  "name": "pline-ai",
+  "version": "0.3.13",
+  "description": "Scrape, crawl, batch-scrape, map, and search the web with pline.ai: the hosted pline.ai MCP server (sign in with your pline.ai account) plus an agent skill that knows when and how to use it.",
+  "author": {
+    "name": "Grepsr",
+    "email": "dev@grepsr.com",
+    "url": "https://pline.ai"
+  },
+  "homepage": "https://pline.ai",
+  "repository": "https://github.com/grepsr/pline.ai",
+  "license": "MIT",
+  "keywords": [
+    "scraping",
+    "crawling",
+    "web-search",
+    "data-extraction",
+    "pline",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "pline.ai",
+    "shortDescription": "Web scraping, crawling, search",
+    "longDescription": "Fetch any web page as Markdown, HTML, a screenshot, or JSON extracted to a prompt or schema; scrape lists of URLs and crawl whole sites as background jobs; discover a site's URLs; and run web searches. pline.ai handles blocked pages, retries, JavaScript rendering, and proxies on its side, so there is nothing to configure per site. Sign in with your pline.ai account and choose the workspace to use; usage counts against that workspace's plan. The bundled skill tells the model when to scrape, batch, crawl, or map, how to scope crawls, reuse sessions, and follow long-running jobs to completion.",
+    "developerName": "Grepsr",
+    "category": "Data & Analytics",
+    "capabilities": [
+      "Scrape web pages",
+      "Extract structured JSON from pages",
+      "Batch-scrape URL lists",
+      "Crawl websites",
+      "Map site URLs",
+      "Search the web"
+    ],
+    "websiteURL": "https://pline.ai",
+    "supportURL": "https://github.com/grepsr/pline.ai/issues",
+    "privacyPolicyURL": "https://www.pline.ai/privacy-policy",
+    "termsOfServiceURL": "https://www.pline.ai/terms-of-service",
+    "defaultPrompt": [
+      "Scrape https://example.com and return it as Markdown.",
+      "Map the URLs on https://www.iana.org, then scrape the about page.",
+      "Search the web for the latest Python release and summarize the top results."
+    ],
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Scrape one page as Markdown",
+              "prompt": "Scrape https://example.com and return the page as Markdown.",
+              "tools_triggered": "scrape",
+              "expected_behavior": "Returns the Example Domain page as Markdown, including its heading and the link to more information."
+            },
+            {
+              "description": "Extract structured data from a page",
+              "prompt": "Extract the page title and every link (text and URL) from https://www.iana.org/domains as JSON.",
+              "tools_triggered": "scrape",
+              "expected_behavior": "Returns JSON with the page title and a list of links with their text and absolute URLs, taken from the page."
+            },
+            {
+              "description": "Batch-scrape a list of URLs",
+              "prompt": "Scrape https://example.com, https://www.iana.org/domains and https://www.iana.org/about, and give me each page's title.",
+              "tools_triggered": "batch_scrape_start, batch_scrape_status",
+              "expected_behavior": "Starts one batch job, follows it to completion, and reports the title of each of the three pages."
+            },
+            {
+              "description": "Map a site, then crawl a section",
+              "prompt": "Map the URLs on https://www.iana.org, then crawl the /domains section, at most 10 pages, and summarize it.",
+              "tools_triggered": "map_site, crawl_start, crawl_status",
+              "expected_behavior": "Lists discovered URLs, runs a crawl limited to 10 pages under /domains, follows it to completion, and summarizes the pages with their URLs."
+            },
+            {
+              "description": "Search the web",
+              "prompt": "Search the web for the IANA root zone database and summarize the top three results.",
+              "tools_triggered": "search",
+              "expected_behavior": "Returns search results and summarizes the top three with their titles and URLs, without inventing results."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Signing in to a third-party account",
+              "prompt": "Log in to my online banking with my password and download my statements."
+            },
+            {
+              "description": "Unsupported write action on another site",
+              "prompt": "Post a review on this product page for me: https://example.com/product."
+            },
+            {
+              "description": "Unrelated task with no web content",
+              "prompt": "Rename all the files in my Downloads folder to lowercase."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not sell products or process payments; pline.ai usage is billed to the user's existing pline.ai plan."
+      },
+      "publication": {
+        "release_notes": "Initial release: the hosted pline.ai MCP server (scrape, batch scrape, crawl, map, search, sessions) with OAuth sign-in, plus the pline-ai skill."
+      }
+    }
+  }
+}
