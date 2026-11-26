@@ -1,5 +1,6 @@
 {
   "name": "pline-ai",
+  "displayName": "pline.ai",
   "version": "0.3.13",
   "description": "Scrape, crawl, batch-scrape, map, and search the web with pline.ai: the hosted pline.ai MCP server (sign in with your pline.ai account) plus an agent skill that knows when and how to use it.",
   "author": {

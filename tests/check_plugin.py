@@ -68,6 +68,10 @@ def check_cursor(claude_manifest):
     for key in ('name', 'description', 'homepage', 'repository', 'license', 'keywords'):
         if cursor.get(key) != claude_manifest.get(key):
             problems.append(f'Cursor plugin.json {key} differs from the Claude manifest')
+    codex_path = PLUGIN / '.codex-plugin/plugin.json'
+    codex_name = json.loads(codex_path.read_text(encoding='utf-8')).get('interface', {}).get('displayName') if codex_path.is_file() else None
+    if cursor.get('displayName') != codex_name:
+        problems.append(f'Cursor plugin.json displayName {cursor.get("displayName")!r} must match the Codex displayName {codex_name!r}')
     if cursor.get('author', {}).get('name') != claude_manifest.get('author', {}).get('name'):
         problems.append('Cursor plugin.json author.name differs from the Claude manifest')
     for key in ('logo', 'skills', 'mcpServers'):
