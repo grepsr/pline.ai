@@ -16,6 +16,7 @@ The plugin bundles two things:
    ```text
    /plugin install pline-ai --marketplace grepsr/pline.ai
    ```
+   In Cursor, install **pline.ai** from the Cursor Marketplace.
 2. When Claude first connects to the server, sign in with your pline.ai account.
 3. On the consent page, choose the pline.ai workspace the plugin should use, and approve.
 
